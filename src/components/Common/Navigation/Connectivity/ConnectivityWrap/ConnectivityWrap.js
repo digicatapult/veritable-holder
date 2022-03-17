@@ -11,7 +11,7 @@ import useGetLoopedConn from '../../../../../interface/hooks/use-get-looped-conn
 import usePostConnCreateInvitation from '../../../../../interface/hooks/use-post-conn-create-invitation'
 import usePostConnReceiveInvitation from '../../../../../interface/hooks/use-post-conn-receive-invitation'
 import useDeleteConnections from '../../../../../interface/hooks/use-delete-connections'
-import { CAA_ENDPOINT, AGENT_LABEL } from '../../../../constants'
+import { CAA_ENDPOINT, AGENT_LABEL } from '../../../../../utils/env'
 
 export default function ConnectivityWrap({ children, serverStatus, origin }) {
   const [dataConnections, setDataConnections] = useState(null)

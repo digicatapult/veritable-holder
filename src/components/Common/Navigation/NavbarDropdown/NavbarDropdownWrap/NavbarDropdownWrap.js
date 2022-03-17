@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import NavbarDropdownMultilineBtn from '../NavbarDropdownMultilineBtn'
 import NavbarDropdownForm from '../NavbarDropdownForm'
-import { AGENT_LABEL, AGENT_ORIGIN } from '../../../../constants'
+import { AGENT_LABEL, AGENT_ORIGIN } from '../../../../../utils/env'
 
 export default function NavbarDropdown({ status, onSaveOrigin }) {
   const defaultAgName = AGENT_LABEL
