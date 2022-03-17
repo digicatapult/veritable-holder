@@ -6,11 +6,11 @@ import { useState } from 'react'
 
 import NavbarDropdownMultilineBtn from '../NavbarDropdownMultilineBtn'
 import NavbarDropdownForm from '../NavbarDropdownForm'
-import { AGENT_LABEL, AGENT_ORIGIN } from '../../../../../utils/env'
+import { HOLDER_LABEL, HOLDER_ORIGIN } from '../../../../../utils/env'
 
 export default function NavbarDropdown({ status, onSaveOrigin }) {
-  const defaultAgName = AGENT_LABEL
-  const defaultOrigin = AGENT_ORIGIN
+  const defaultAgName = HOLDER_LABEL
+  const defaultOrigin = HOLDER_ORIGIN
   const [origin, setOrigin] = useState(defaultOrigin)
   const [isVisible, setIsVisible] = useState(status === 'idle')
 

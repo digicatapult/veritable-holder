@@ -11,7 +11,7 @@ import useGetLoopedConn from '../../../../../interface/hooks/use-get-looped-conn
 import usePostConnCreateInvitation from '../../../../../interface/hooks/use-post-conn-create-invitation'
 import usePostConnReceiveInvitation from '../../../../../interface/hooks/use-post-conn-receive-invitation'
 import useDeleteConnections from '../../../../../interface/hooks/use-delete-connections'
-import { CAA_ENDPOINT, AGENT_LABEL } from '../../../../../utils/env'
+import { AUTHORITY_ORIGIN, HOLDER_LABEL } from '../../../../../utils/env'
 
 export default function ConnectivityWrap({ children, serverStatus, origin }) {
   const [dataConnections, setDataConnections] = useState(null)
@@ -46,11 +46,11 @@ export default function ConnectivityWrap({ children, serverStatus, origin }) {
   useEffect(() => {
     const createConnection = (agent, data) => {
       const connected = isConnected(agent, data?.results)
-      if (!['licensee', 'holder'].includes(AGENT_LABEL) || connected) {
+      if (!['licensee', 'holder'].includes(HOLDER_LABEL) || connected) {
         return null
       }
       // TODO origin should be an env var for CAA
-      startCreateInvHandler(CAA_ENDPOINT, agent, (invitationId) => {
+      startCreateInvHandler(AUTHORITY_ORIGIN, agent, (invitationId) => {
         startReceiveInvHandler(
           origin,
           invitationId,
@@ -86,7 +86,7 @@ export default function ConnectivityWrap({ children, serverStatus, origin }) {
     e.stopPropagation()
     const setStoreDataFn = (resData) => setInvitationData(resData)
     if (statusCreateInv !== 'fetching' || statusCreateInv !== 'error') {
-      startCreateInvHandler(origin, AGENT_LABEL, setStoreDataFn)
+      startCreateInvHandler(origin, HOLDER_LABEL, setStoreDataFn)
     }
   }
 
@@ -98,7 +98,7 @@ export default function ConnectivityWrap({ children, serverStatus, origin }) {
       startReceiveInvHandler(
         origin,
         pasted,
-        AGENT_LABEL,
+        HOLDER_LABEL,
         setStatusValFn,
         setStoreDataFn
       )
