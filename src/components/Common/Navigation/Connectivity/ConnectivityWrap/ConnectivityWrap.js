@@ -49,7 +49,6 @@ export default function ConnectivityWrap({ children, serverStatus, origin }) {
       if (!['licensee', 'holder'].includes(HOLDER_LABEL) || connected) {
         return null
       }
-      // TODO origin should be an env var for CAA
       startCreateInvHandler(AUTHORITY_ORIGIN, agent, (invitationId) => {
         startReceiveInvHandler(
           origin,
