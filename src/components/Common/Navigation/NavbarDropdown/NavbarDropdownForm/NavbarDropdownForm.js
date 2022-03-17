@@ -4,7 +4,6 @@
  */
 export default function NavbarDropdownForm({
   defaultAgName,
-  defaultPort,
   defaultOrigin,
   origin,
   submitHandler,
@@ -40,7 +39,7 @@ export default function NavbarDropdownForm({
             <div className="card-body py-0">
               <div className="input-group input-group-sm">
                 <label className="w-100 justify-content-start">
-                  Predefined Endpoint – {defaultAgName} ({defaultPort})
+                  Predefined Endpoint – {defaultAgName} ({defaultOrigin})
                 </label>
                 <input
                   className="form-control"

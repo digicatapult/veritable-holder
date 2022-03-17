@@ -83,6 +83,7 @@ export default function ConnectivityWrap({ children, serverStatus, origin }) {
 
   const clickCreateInvHandler = (e) => {
     e.stopPropagation()
+    e.preventDefault()
     const setStoreDataFn = (resData) => setInvitationData(resData)
     if (statusCreateInv !== 'fetching' || statusCreateInv !== 'error') {
       startCreateInvHandler(origin, HOLDER_LABEL, setStoreDataFn)
@@ -91,6 +92,7 @@ export default function ConnectivityWrap({ children, serverStatus, origin }) {
 
   const clickReceiveInvitationHandler = (e) => {
     e.stopPropagation()
+    e.preventDefault()
     const setStatusValFn = (statusVal) => setStatusReceiveInv(statusVal)
     const setStoreDataFn = (resData) => setLastConnId(resData)
     if (statusReceiveInv !== 'fetching' || statusReceiveInv !== 'error') {
