@@ -32,7 +32,7 @@ export default function AuthLoggedOutPopup() {
               <div className="small lead my-3">
                 <span>You have successfully logged off!</span>
               </div>
-              <div className="lead">Login back or close this page...</div>
+              <div className="lead">Log back in or close this page...</div>
             </div>
           </div>
           <div className="modal-footer " data-dismiss="modal">
@@ -42,7 +42,7 @@ export default function AuthLoggedOutPopup() {
               type="button"
               className="btn btn-outline-dark mx-auto"
             >
-              Login back in to your account
+              Log back in to your account
             </button>
           </div>
         </div>
