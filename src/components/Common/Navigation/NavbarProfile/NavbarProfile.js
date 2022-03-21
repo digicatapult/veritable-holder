@@ -1,11 +1,10 @@
-/**
- * `NavbarProfile` is a React component that renders a navbar profile
- * @returns A navbar profile.
- */
+import { useAuth0 } from '@auth0/auth0-react'
+
 export default function NavbarProfile({ status, data }) {
+  const { isAuthenticated, user, logout } = useAuth0()
   return (
     <ul className="navbar-nav">
-      <li className="nav-item">
+      <li className={isAuthenticated ? 'nav-item dropdown' : 'nav-item'}>
         {status === 'idle' && <span>&nbsp;</span>}
         {status === 'error' && (
           <i className="fa fa-chain-broken text-white-50"></i>
@@ -13,20 +12,55 @@ export default function NavbarProfile({ status, data }) {
         {status === 'fetching' && (
           <i className="fa fa-spinner fa-pulse fa-fw text-light"></i>
         )}
-        {status === 'fetched' && (
-          <a
-            className="nav-link navbar-brand"
-            onClick={(e) => e.preventDefault()}
-            href="#/"
-          >
-            <i className="fa fa-md fa-user-circle-o" />
-            <span className="text-capitalize small">
-              <span>&nbsp;</span>
-              {data.label
-                ? data.label.replace('.', ' ').replace('agent', '')
-                : 'NoLabel'}
-            </span>
-          </a>
+        {status === 'fetched' && isAuthenticated && (
+          <>
+            <a
+              className="nav-item nav-link navbar-brand dropdown-toggle"
+              data-toggle="dropdown"
+              href="#"
+              role="button"
+              aria-haspopup="true"
+            >
+              <span>
+                <i className="fa fa-md fa-user-circle-o" />
+                <span className="text-capitalize small">
+                  <span>&nbsp;</span>
+                  {data.label
+                    ? data.label.replace('.', ' ').replace('agent', '')
+                    : 'NoLabel'}
+                </span>
+              </span>
+            </a>
+            <div className="dropdown-menu">
+              <div className="dropdown-divider my-1" />
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={(e) => e.preventDefault()}
+              >
+                User: <span>{user.name}</span>
+              </a>
+              <div className="dropdown-divider my-1" />
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={(e) => e.preventDefault()}
+              >
+                Id: <span className="small">{user.sub}</span>
+              </a>
+              <div className="dropdown-divider my-1" />
+              <a
+                className="dropdown-item"
+                href="#"
+                onClick={() => {
+                  logout()
+                }}
+              >
+                Logout
+              </a>
+              <div className="dropdown-divider my-1" />
+            </div>
+          </>
         )}
       </li>
     </ul>
