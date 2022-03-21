@@ -33,7 +33,8 @@ export default function AppCore({ agent }) {
   const [showAuthRedirectPopup, setShowAuthRedirectPopup] = useState(false)
   const [showAuthLoggedOutPopup, setShowAuthLoggedOutPopup] = useState(false)
 
-  const { loginWithRedirect, isAuthenticated, isLoading, logout } = useAuth0()
+  const { loginWithRedirect, isAuthenticated, isLoading, logout, user } =
+    useAuth0()
 
   /* Example of data obj: */
   /* {"version":"0.7.3","label":"foo.agent", "conductor":{"in_sessions":0,"out_encode":0,
@@ -81,62 +82,81 @@ export default function AppCore({ agent }) {
         {showAuthRedirectPopup && <AuthRedirectPopup />}
         {showAuthLoggedOutPopup && <AuthLoggedOutPopup />}
       </>
-      <NavbarWrap>
-        <LogoWrap agent={agent} />
-        {status === 'idle' && !error && (
-          <>
-            <NavbarDropdownWrap
-              status={status}
-              agent={agent}
-              onSaveOrigin={saveOriginHandler}
+      {isAuthenticated && (
+        <NavbarWrap>
+          <LogoWrap agent={agent} />
+          {status === 'idle' && !error && (
+            <>
+              <NavbarDropdownWrap
+                status={status}
+                agent={agent}
+                onSaveOrigin={saveOriginHandler}
+              />
+              <NavbarNavigationMenu status={status} />
+              <NavbarProfile
+                status={status}
+                user={user}
+                onClickLogout={clickLogoutHandler}
+              />
+            </>
+          )}
+          {status === 'error' && (
+            <>
+              <NavbarDropdownWrap status={status} agent={agent} />
+              <NavbarNavigationMenu status={status} />
+              <NavbarProfile
+                status={status}
+                user={user}
+                onClickLogout={clickLogoutHandler}
+              />
+            </>
+          )}
+          {status === 'fetching' && !error && (
+            <>
+              <NavbarDropdownWrap status={status} agent={agent} />
+              <NavbarNavigationMenu status={status} />
+              <NavbarProfile
+                status={status}
+                user={user}
+                onClickLogout={clickLogoutHandler}
+              />
+            </>
+          )}
+          {status === 'fetched' && !error && (
+            <>
+              <NavbarDropdownWrap status={status} agent={agent} />
+              <NavbarNavigationMenu status={status} />
+              <NavbarProfile
+                status={status}
+                data={data}
+                user={user}
+                onClickLogout={clickLogoutHandler}
+              />
+            </>
+          )}
+        </NavbarWrap>
+      )}
+      {isAuthenticated && (
+        <ConnectivityAndBreadcrumbWrap>
+          <BreadcrumbWrap status={status} persona={data.label} />
+          {status === 'fetched' && (
+            <ConnectivityWrap
+              serverStatus={status}
+              origin={configuredOrigin}
+              persona={data.label}
             />
-            <NavbarNavigationMenu status={status} />
-            <NavbarProfile status={status} />
-          </>
-        )}
-        {status === 'error' && (
-          <>
-            <NavbarDropdownWrap status={status} agent={agent} />
-            <NavbarNavigationMenu status={status} />
-            <NavbarProfile status={status} />
-          </>
-        )}
-        {status === 'fetching' && !error && (
-          <>
-            <NavbarDropdownWrap status={status} agent={agent} />
-            <NavbarNavigationMenu status={status} />
-            <NavbarProfile status={status} />
-          </>
-        )}
-        {status === 'fetched' && !error && (
-          <>
-            <NavbarDropdownWrap status={status} agent={agent} />
-            <NavbarNavigationMenu status={status} />
-            <NavbarProfile
-              status={status}
-              data={data}
-              onClickLogout={clickLogoutHandler}
-            />
-          </>
-        )}
-      </NavbarWrap>
-      <ConnectivityAndBreadcrumbWrap>
-        <BreadcrumbWrap status={status} persona={data.label} />
-        {status === 'fetched' && (
-          <ConnectivityWrap
-            serverStatus={status}
+          )}
+        </ConnectivityAndBreadcrumbWrap>
+      )}
+      {isAuthenticated && (
+        <ContentSelectorWrap>
+          <ContentSelector
+            status={status}
             origin={configuredOrigin}
             persona={data.label}
           />
-        )}
-      </ConnectivityAndBreadcrumbWrap>
-      <ContentSelectorWrap>
-        <ContentSelector
-          status={status}
-          origin={configuredOrigin}
-          persona={data.label}
-        />
-      </ContentSelectorWrap>
+        </ContentSelectorWrap>
+      )}
       {status === 'error' && <ErrorModal visibility content={error} />}
     </>
   )

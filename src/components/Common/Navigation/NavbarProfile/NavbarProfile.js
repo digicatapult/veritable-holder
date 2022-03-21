@@ -1,10 +1,7 @@
-import { useAuth0 } from '@auth0/auth0-react'
-
-export default function NavbarProfile({ status, data, onClickLogout }) {
-  const { isAuthenticated, user } = useAuth0()
+export default function NavbarProfile({ status, data, onClickLogout, user }) {
   return (
     <ul className="navbar-nav">
-      <li className={isAuthenticated ? 'nav-item dropdown' : 'nav-item'}>
+      <li className={'nav-item dropdown'}>
         {status === 'idle' && <span>&nbsp;</span>}
         {status === 'error' && (
           <i className="fa fa-chain-broken text-white-50"></i>
@@ -12,7 +9,7 @@ export default function NavbarProfile({ status, data, onClickLogout }) {
         {status === 'fetching' && (
           <i className="fa fa-spinner fa-pulse fa-fw text-light"></i>
         )}
-        {status === 'fetched' && isAuthenticated && (
+        {status === 'fetched' && (
           <>
             <a
               className="nav-item nav-link navbar-brand dropdown-toggle"
