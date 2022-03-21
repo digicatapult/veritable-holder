@@ -33,11 +33,15 @@ export default function AppCore({ agent }) {
   const [showAuthRedirectPopup, setShowAuthRedirectPopup] = useState(false)
   const [showAuthLoggedOutPopup, setShowAuthLoggedOutPopup] = useState(false)
 
-  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0()
+  const { loginWithRedirect, isAuthenticated, isLoading, logout } = useAuth0()
 
   /* Example of data obj: */
   /* {"version":"0.7.3","label":"foo.agent", "conductor":{"in_sessions":0,"out_encode":0,
 	"out_deliver":0,"task_active":1,"task_done":816, "task_failed":97,"task_pending":0}} */
+
+  const clickLogoutHandler = () => {
+    logout()
+  }
 
   useEffect(() => {
     // On componentDidMount set the timed redirect popup
@@ -108,7 +112,11 @@ export default function AppCore({ agent }) {
           <>
             <NavbarDropdownWrap status={status} agent={agent} />
             <NavbarNavigationMenu status={status} />
-            <NavbarProfile status={status} data={data} />
+            <NavbarProfile
+              status={status}
+              data={data}
+              onClickLogout={clickLogoutHandler}
+            />
           </>
         )}
       </NavbarWrap>

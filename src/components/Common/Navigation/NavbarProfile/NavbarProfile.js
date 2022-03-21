@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react'
 
-export default function NavbarProfile({ status, data }) {
-  const { isAuthenticated, user, logout } = useAuth0()
+export default function NavbarProfile({ status, data, onClickLogout }) {
+  const { isAuthenticated, user } = useAuth0()
   return (
     <ul className="navbar-nav">
       <li className={isAuthenticated ? 'nav-item dropdown' : 'nav-item'}>
@@ -49,13 +49,7 @@ export default function NavbarProfile({ status, data }) {
                 Id: <span className="small">{user.sub}</span>
               </a>
               <div className="dropdown-divider my-1" />
-              <a
-                className="dropdown-item"
-                href="#"
-                onClick={() => {
-                  logout()
-                }}
-              >
+              <a className="dropdown-item" href="#" onClick={onClickLogout}>
                 Logout
               </a>
               <div className="dropdown-divider my-1" />
