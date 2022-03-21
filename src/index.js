@@ -1,15 +1,17 @@
-/**
- * This renders ReactDOM.render() which is a React method that takes two arguments:
- * 1. The first argument is the component you want to render, as in, the App component.
- * 2. The second argument is the DOM element you want to render the component to.
- */
+/* This is the code that renders the app. */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
+import { Auth0Provider } from '@auth0/auth0-react'
+import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from './utils/env'
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Auth0Provider
+    domain={AUTH0_DOMAIN}
+    clientId={AUTH0_CLIENT_ID}
+    redirectUri={window.location.origin}
+  >
     <App />
-  </React.StrictMode>,
+  </Auth0Provider>,
   document.getElementById('root')
 )
