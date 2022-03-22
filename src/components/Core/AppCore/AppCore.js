@@ -28,13 +28,21 @@ import { useAuth0 } from '@auth0/auth0-react'
 export default function AppCore({ agent }) {
   const [configuredOrigin, setConfiguredOrigin] = useState('')
   const [data, setData] = useState({})
+  const [userDetails, setUserDetails] = useState(null)
+  const [userToken, setUserToken] = useState(null)
   const [status, error, startFetchHandler] = useGetServerStatus()
 
   const [showAuthRedirectPopup, setShowAuthRedirectPopup] = useState(false)
   const [showAuthLoggedOutPopup, setShowAuthLoggedOutPopup] = useState(false)
 
-  const { loginWithRedirect, isAuthenticated, isLoading, logout, user } =
-    useAuth0()
+  const {
+    loginWithRedirect,
+    isAuthenticated,
+    isLoading,
+    logout,
+    user,
+    getAccessTokenSilently,
+  } = useAuth0()
 
   /* Example of data obj: */
   /* {"version":"0.7.3","label":"foo.agent", "conductor":{"in_sessions":0,"out_encode":0,
@@ -48,6 +56,7 @@ export default function AppCore({ agent }) {
 
   useEffect(() => {
     // On componentDidMount set the timed redirect popup
+    // TODO: This part needs a bit of cleanup!
     if (!isLoading && !isAuthenticated && localStorage.getItem('wasAuthB4')) {
       setShowAuthLoggedOutPopup(true)
     }
@@ -65,7 +74,17 @@ export default function AppCore({ agent }) {
         clearInterval(timeId)
       }
     }
-  }, [isLoading, isAuthenticated, loginWithRedirect])
+    if (isAuthenticated) {
+      setUserDetails(user)
+      getAccessTokenSilently().then((t) => setUserToken(t))
+    }
+  }, [
+    isLoading,
+    isAuthenticated,
+    loginWithRedirect,
+    user,
+    getAccessTokenSilently,
+  ])
 
   const saveOriginHandler = (insertedOrigin) => {
     const setStoreDataFn = (resData) => {
@@ -97,7 +116,8 @@ export default function AppCore({ agent }) {
               <NavbarNavigationMenu status={status} />
               <NavbarProfile
                 status={status}
-                user={user}
+                user={userDetails}
+                token={userToken}
                 onClickLogout={clickLogoutHandler}
               />
             </>
@@ -108,7 +128,8 @@ export default function AppCore({ agent }) {
               <NavbarNavigationMenu status={status} />
               <NavbarProfile
                 status={status}
-                user={user}
+                user={userDetails}
+                token={userToken}
                 onClickLogout={clickLogoutHandler}
               />
             </>
@@ -119,7 +140,8 @@ export default function AppCore({ agent }) {
               <NavbarNavigationMenu status={status} />
               <NavbarProfile
                 status={status}
-                user={user}
+                user={userDetails}
+                token={userToken}
                 onClickLogout={clickLogoutHandler}
               />
             </>
@@ -131,7 +153,8 @@ export default function AppCore({ agent }) {
               <NavbarProfile
                 status={status}
                 data={data}
-                user={user}
+                user={userDetails}
+                token={userToken}
                 onClickLogout={clickLogoutHandler}
               />
             </>

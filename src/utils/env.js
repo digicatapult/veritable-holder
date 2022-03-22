@@ -8,3 +8,5 @@ export const AUTH0_DOMAIN =
   process.env.REACT_APP_AUTH0_DOMAIN || 'veritable.eu.auth0.com'
 export const AUTH0_CLIENT_ID =
   process.env.REACT_APP_AUTH0_CLIENT_ID || 'HIizH1ENhDCIpWp3g0yyIf5rBMCRlFm5'
+export const AUTH_AUDIENCE =
+  process.env.REACT_APP_AUTH_AUDIENCE || 'http://veritable-dev'
