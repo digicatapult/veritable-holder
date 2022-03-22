@@ -28,6 +28,7 @@ export default function CredentialSetItem({
   records,
 }) {
   const [isDisconnected, setIsDisconnected] = useState(false)
+  const [lastProposalId, setLastProposalId] = useState('')
   const [statusConnId, errorConnId, startFetchConnIdHandler] = useGetConn()
   const [errorProposal, startFetchHandler] = usePostPresentProofSendProposal()
   const [statusSendProposal, setStatusSendProposal] = useState('')
@@ -44,7 +45,7 @@ export default function CredentialSetItem({
       type,
       cred_def_id,
       setStatusSendProposal,
-      () => {}
+      setLastProposalId
     )
   }
 
@@ -223,7 +224,10 @@ export default function CredentialSetItem({
         }}
       >
         <div className="text-light m-2 p-2">
-          <small>Failed to fetch: {errorConnId}</small>
+          <small>
+            Failed to fetch: {errorConnId}
+            {errorProposal}
+          </small>
         </div>
       </div>
       <div
@@ -247,7 +251,7 @@ export default function CredentialSetItem({
               <div className="modal-body">
                 <div className="my-3">
                   <i className="fa fa-check ml-0 mr-2"></i>
-                  Success! Proof Presentation Proposal Sent.
+                  Success! Proposal ID: <small>{lastProposalId}</small>
                 </div>
               </div>
               <div className="modal-footer" data-dismiss="modal">
