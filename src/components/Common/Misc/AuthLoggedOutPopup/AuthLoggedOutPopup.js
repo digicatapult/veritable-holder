@@ -30,9 +30,9 @@ export default function AuthLoggedOutPopup() {
                 </span>
               </div>
               <div className="small lead my-3">
-                <span>You have successfully logged off!</span>
+                <span>You have successfully logged out!</span>
               </div>
-              <div className="lead">Log back in or close this page...</div>
+              <div className="lead">Try again or close this page...</div>
             </div>
           </div>
           <div className="modal-footer " data-dismiss="modal">
