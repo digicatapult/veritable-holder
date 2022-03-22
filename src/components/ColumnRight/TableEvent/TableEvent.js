@@ -12,11 +12,12 @@ export default function TableEvent({ i, j, k, eId, cId, event }) {
     return `${str.substr(0, 2)}…${str.substr(34, 36)}`
   }
   const getPredicate = (byFormatObj) => {
-    if (!byFormatObj?.pres_request?.indy) {
+    const predicatesObj = byFormatObj?.pres_request?.indy?.requested_predicates
+
+    if (!predicatesObj) {
       return `N/A`
     }
 
-    const predicatesObj = byFormatObj?.pres_request?.indy?.requested_predicates
     const firstPredicate = Object.entries(predicatesObj)[0]
     const predicateKeyStr = firstPredicate[0].split('_')[1]
     const predicateName =

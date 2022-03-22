@@ -50,7 +50,6 @@ export default function CredentialSetItem({
 
   const submitHandler = () => {
     const connIdCb = (connectionId) => {
-      console.log(connectionId)
       if (!connectionId) {
         setIsDisconnected(true)
         return
@@ -248,7 +247,7 @@ export default function CredentialSetItem({
               <div className="modal-body">
                 <div className="my-3">
                   <i className="fa fa-check ml-0 mr-2"></i>
-                  Success! Proof Presentation Request Sent.
+                  Success! Proof Presentation Proposal Sent.
                 </div>
               </div>
               <div className="modal-footer" data-dismiss="modal">
