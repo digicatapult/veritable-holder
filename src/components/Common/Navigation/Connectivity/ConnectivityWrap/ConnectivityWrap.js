@@ -11,7 +11,11 @@ import useGetLoopedConn from '../../../../../interface/hooks/use-get-looped-conn
 import usePostConnCreateInvitation from '../../../../../interface/hooks/use-post-conn-create-invitation'
 import usePostConnReceiveInvitation from '../../../../../interface/hooks/use-post-conn-receive-invitation'
 import useDeleteConnections from '../../../../../interface/hooks/use-delete-connections'
-import { AUTHORITY_ORIGIN, HOLDER_LABEL } from '../../../../../utils/env'
+import {
+  AUTHORITY_ORIGIN,
+  HOLDER_LABEL,
+  AUTHORITY_LABEL,
+} from '../../../../../utils/env'
 
 export default function ConnectivityWrap({ children, serverStatus, origin }) {
   const [dataConnections, setDataConnections] = useState(null)
@@ -63,7 +67,7 @@ export default function ConnectivityWrap({ children, serverStatus, origin }) {
     const setStoreDataFn = (resData) => {
       setDataConnections(resData)
       if (!caaConnected) {
-        createConnection('authority', resData)
+        createConnection(AUTHORITY_LABEL, resData)
       }
     }
     const intervalIdFetch = startGetConnectionsHandler(origin, setStoreDataFn)

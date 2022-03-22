@@ -7,6 +7,7 @@
 import { useState } from 'react'
 import useGetConn from '../../../interface/hooks/use-get-conn'
 import usePostPresentProofSendProposal from '../../../interface/hooks/use-post-present-proof-send-proposal'
+import { AUTHORITY_LABEL } from '../../../utils/env'
 
 export default function CredentialSetItem({
   origin,
@@ -49,6 +50,7 @@ export default function CredentialSetItem({
 
   const submitHandler = () => {
     const connIdCb = (connectionId) => {
+      console.log(connectionId)
       if (!connectionId) {
         setIsDisconnected(true)
         return
@@ -56,7 +58,7 @@ export default function CredentialSetItem({
       onSubmit(connectionId)
     }
     setIsDisconnected(false)
-    startFetchConnIdHandler(origin, connIdCb)
+    startFetchConnIdHandler(origin, connIdCb, AUTHORITY_LABEL)
   }
 
   const alreadyProposed = () => {
