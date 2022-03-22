@@ -53,7 +53,7 @@ export default function ConnectivityWrap({ children, serverStatus, origin }) {
         startReceiveInvHandler(
           origin,
           invitationId,
-          agent,
+          HOLDER_LABEL,
           setStatusReceiveInv,
           setLastConnId
         )
