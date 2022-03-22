@@ -56,25 +56,26 @@ export default function AppCore({ agent }) {
 
   useEffect(() => {
     // On componentDidMount set the timed redirect popup
-    // TODO: This part needs a bit of cleanup!
-    if (!isLoading && !isAuthenticated && localStorage.getItem('wasAuthB4')) {
-      setShowAuthLoggedOutPopup(true)
-    }
-    if (!isLoading && !isAuthenticated && !localStorage.getItem('wasAuthB4')) {
-      setShowAuthRedirectPopup(true)
-      const timeId = setTimeout(() => {
-        // After 3 seconds set the show value to false to remove popup
-        setShowAuthRedirectPopup(false)
-        loginWithRedirect().then(() => {
-          localStorage.setItem('wasAuthB4', 'true')
-        })
-      }, 3 * 1000)
-      return () => {
-        // Clear the interval just to keep things simple
-        clearInterval(timeId)
+    if (!isAuthenticated && !isLoading) {
+      if (localStorage.getItem('wasAuthB4')) {
+        setShowAuthLoggedOutPopup(true)
+      } else if (!localStorage.getItem('wasAuthB4')) {
+        setShowAuthRedirectPopup(true)
+        const timeId = setTimeout(() => {
+          // After 3 seconds set the show value to false to remove popup
+          setShowAuthRedirectPopup(false)
+          loginWithRedirect().then(() => {
+            localStorage.setItem('wasAuthB4', 'true')
+          })
+        }, 3 * 1000)
+        return () => {
+          // Clear the interval just to keep things simple
+          clearInterval(timeId)
+        }
       }
     }
-    if (isAuthenticated) {
+    // Finally authenticated, meaning the info about the user and token can be pulled now
+    if (isAuthenticated && !isLoading) {
       setUserDetails(user)
       getAccessTokenSilently().then((t) => setUserToken(t))
     }
