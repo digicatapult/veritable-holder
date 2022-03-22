@@ -41,7 +41,9 @@ export default function AppCore({ agent }) {
 	"out_deliver":0,"task_active":1,"task_done":816, "task_failed":97,"task_pending":0}} */
 
   const clickLogoutHandler = () => {
-    logout()
+    const { protocol, hostname, port } = window.location
+    const returnTo = `${protocol}//${hostname}:${port ? port : ''}`
+    logout({ returnTo })
   }
 
   useEffect(() => {
