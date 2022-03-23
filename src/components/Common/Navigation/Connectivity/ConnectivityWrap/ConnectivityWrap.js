@@ -50,7 +50,7 @@ export default function ConnectivityWrap({ children, serverStatus, origin }) {
   useEffect(() => {
     const createConnection = (agent, data) => {
       const connected = isConnected(agent, data?.results)
-      if (!['licensee', 'holder'].includes(HOLDER_LABEL) || connected) {
+      if (!['holder'].includes(HOLDER_LABEL) || connected) {
         return null
       }
       startCreateInvHandler(AUTHORITY_ORIGIN, agent, (invitationId) => {
