@@ -12,8 +12,8 @@ export default function usePostPresentProofSendProposal() {
   const [error, setError] = useState(null)
 
   const onStartFetch = useCallback(
-    (origin, connectionId, id, type, credDefId, setStatus, setStoreData) => {
-      const createBody = (connectionId, id, type, credDefId) => {
+    (origin, connectionId, id, type, referent, setStatus, setStoreData) => {
+      const createBody = (connectionId, id, type, referent) => {
         const reqAttrs = [
           {
             name: 'id',
@@ -33,11 +33,11 @@ export default function usePostPresentProofSendProposal() {
         ]
 
         return {
-          comment: credDefId,
+          comment: referent,
           connection_id: connectionId,
           presentation_proposal: {
             indy: {
-              name: 'Proof of Expiration',
+              name: 'Proof of Test Certificate',
               version: '1.0',
               requested_attributes: Object.fromEntries(
                 reqAttrs.map((e) => [`0_${e.name}_uuid`, e])
@@ -50,7 +50,7 @@ export default function usePostPresentProofSendProposal() {
         }
       }
       const params = {}
-      const body = createBody(connectionId, id, type, credDefId)
+      const body = createBody(connectionId, id, type, referent)
 
       post(
         origin,

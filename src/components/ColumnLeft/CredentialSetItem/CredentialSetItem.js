@@ -13,6 +13,7 @@ export default function CredentialSetItem({
   origin,
   item: {
     cred_def_id,
+    referent,
     attrs: {
       timestamp,
       id,
@@ -43,7 +44,7 @@ export default function CredentialSetItem({
       connectionId,
       id,
       type,
-      cred_def_id,
+      referent,
       setStatusSendProposal,
       setLastProposalId
     )
@@ -63,7 +64,7 @@ export default function CredentialSetItem({
 
   const alreadyProposed = () => {
     return records?.some((record) => {
-      return record.pres_proposal?.comment === cred_def_id
+      return record.pres_proposal?.comment === referent
     })
   }
 
