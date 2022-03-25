@@ -12,6 +12,7 @@
 export default async function post(
   origin,
   path,
+  getAuthToken,
   params,
   body,
   setStatus,
@@ -23,9 +24,14 @@ export default async function post(
   const url = origin + path + '?' + params
   body = JSON.stringify(body)
   const method = 'POST'
-  const headers = { 'Content-Type': 'application/json' }
+  const headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  }
   try {
     setStatus('fetching')
+    const token = await getAuthToken()
+    headers['Authorization'] = `Bearer ${token}`
     const res = await fetch(url, { body, method, headers })
     if (res.ok) {
       const data = await res.json()

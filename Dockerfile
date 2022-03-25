@@ -9,8 +9,10 @@ WORKDIR /veritable-holder
 COPY . .
 RUN npm ci --production
 
+ARG WALLET_TYPE=indy
+
 # RUN Build
-RUN npm run build
+RUN REACT_APP_WALLET_TYPE=$WALLET_TYPE npm run build
 
 ##################################################################################################
 

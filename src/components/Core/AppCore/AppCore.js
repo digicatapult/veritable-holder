@@ -5,8 +5,10 @@
  * ConnectivityAndBreadcrumbWrap, and ContentSelectorWrap components.
  */
 import { useState, useEffect } from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
 
 import useGetServerStatus from '../../../interface/hooks/use-get-server-status'
+import usePostMultitenancyWallet from '../../../interface/hooks/use-post-multitenancy-wallet'
 
 import NavbarWrap from './../../Common/Navigation/NavbarWrap'
 import LogoWrap from '../../Common/Navigation/LogoWrap'
@@ -23,30 +25,25 @@ import ContentSelector from '../../Common/Misc/ContentSelector'
 import AuthLoadingOverlay from '../../Common/Misc/AuthLoadingOverlay'
 import AuthRedirectPopup from '../../Common/Misc/AuthRedirectPopup'
 import AuthLoggedOutPopup from '../../Common/Misc/AuthLoggedOutPopup'
-import { useAuth0 } from '@auth0/auth0-react'
+
+import WALLET_STATUS from '../../../utils/wallet-status'
 
 export default function AppCore({ agent }) {
   const [configuredOrigin, setConfiguredOrigin] = useState('')
-  const [data, setData] = useState({})
+  const [serverStatus, setServerStatus] = useState({})
   const [userDetails, setUserDetails] = useState(null)
-  const [userToken, setUserToken] = useState(null)
-  const [status, error, startFetchHandler] = useGetServerStatus()
+  const [walletStatus, setWalletStatus] = useState(WALLET_STATUS.NOT_READY)
+
+  const [statusGetStatus, statusGetError, startGetStatusHandler] =
+    useGetServerStatus()
+  const [walletPostStatus, walletPostError, startWalletPostHandler] =
+    usePostMultitenancyWallet()
 
   const [showAuthRedirectPopup, setShowAuthRedirectPopup] = useState(false)
   const [showAuthLoggedOutPopup, setShowAuthLoggedOutPopup] = useState(false)
 
-  const {
-    loginWithRedirect,
-    isAuthenticated,
-    isLoading,
-    logout,
-    user,
-    getAccessTokenSilently,
-  } = useAuth0()
-
-  /* Example of data obj: */
-  /* {"version":"0.7.3","label":"foo.agent", "conductor":{"in_sessions":0,"out_encode":0,
-	"out_deliver":0,"task_active":1,"task_done":816, "task_failed":97,"task_pending":0}} */
+  const { loginWithRedirect, isAuthenticated, isLoading, logout, user } =
+    useAuth0()
 
   const clickLogoutHandler = () => {
     const { protocol, hostname, port } = window.location
@@ -77,26 +74,31 @@ export default function AppCore({ agent }) {
     // Finally authenticated, meaning the info about the user and token can be pulled now
     if (isAuthenticated && !isLoading) {
       setUserDetails(user)
-      getAccessTokenSilently().then((t) => setUserToken(t))
     }
   }, [
     isLoading,
     isAuthenticated,
     loginWithRedirect,
     user,
-    getAccessTokenSilently,
+    startWalletPostHandler,
   ])
 
-  const saveOriginHandler = (insertedOrigin) => {
-    const setStoreDataFn = (resData) => {
-      setData(resData)
+  useEffect(() => {
+    if (walletPostStatus === 'error' && walletPostError === '409:Conflict') {
+      setWalletStatus(WALLET_STATUS.READY)
     }
+  }, [walletPostStatus, walletPostError])
+
+  const saveOriginHandler = (insertedOrigin) => {
     setConfiguredOrigin(insertedOrigin)
     if (insertedOrigin !== '') {
-      startFetchHandler(insertedOrigin, setStoreDataFn)
+      startGetStatusHandler(insertedOrigin, setServerStatus)
+      startWalletPostHandler(insertedOrigin, user.name, setWalletStatus)
     }
   }
 
+  const applicationReady =
+    isAuthenticated && walletStatus === WALLET_STATUS.READY
   return (
     <>
       <>
@@ -107,83 +109,85 @@ export default function AppCore({ agent }) {
       {isAuthenticated && (
         <NavbarWrap>
           <LogoWrap agent={agent} />
-          {status === 'idle' && !error && (
+          {statusGetStatus === 'idle' && !statusGetError && (
             <>
               <NavbarDropdownWrap
-                status={status}
+                status={statusGetStatus}
                 agent={agent}
                 onSaveOrigin={saveOriginHandler}
               />
-              <NavbarNavigationMenu status={status} />
+              <NavbarNavigationMenu status={statusGetStatus} />
               <NavbarProfile
-                status={status}
+                status={statusGetStatus}
                 user={userDetails}
-                token={userToken}
                 onClickLogout={clickLogoutHandler}
               />
             </>
           )}
-          {status === 'error' && (
+          {statusGetStatus === 'error' && (
             <>
-              <NavbarDropdownWrap status={status} agent={agent} />
-              <NavbarNavigationMenu status={status} />
+              <NavbarDropdownWrap status={statusGetStatus} agent={agent} />
+              <NavbarNavigationMenu status={statusGetStatus} />
               <NavbarProfile
-                status={status}
+                status={statusGetStatus}
                 user={userDetails}
-                token={userToken}
                 onClickLogout={clickLogoutHandler}
               />
             </>
           )}
-          {status === 'fetching' && !error && (
+          {statusGetStatus === 'fetching' && !statusGetError && (
             <>
-              <NavbarDropdownWrap status={status} agent={agent} />
-              <NavbarNavigationMenu status={status} />
+              <NavbarDropdownWrap status={statusGetStatus} agent={agent} />
+              <NavbarNavigationMenu status={statusGetStatus} />
               <NavbarProfile
-                status={status}
+                status={statusGetStatus}
                 user={userDetails}
-                token={userToken}
                 onClickLogout={clickLogoutHandler}
               />
             </>
           )}
-          {status === 'fetched' && !error && (
+          {statusGetStatus === 'fetched' && !statusGetError && (
             <>
-              <NavbarDropdownWrap status={status} agent={agent} />
-              <NavbarNavigationMenu status={status} />
+              <NavbarDropdownWrap status={statusGetStatus} agent={agent} />
+              <NavbarNavigationMenu status={statusGetStatus} />
               <NavbarProfile
-                status={status}
-                data={data}
+                status={statusGetStatus}
+                data={serverStatus}
                 user={userDetails}
-                token={userToken}
                 onClickLogout={clickLogoutHandler}
               />
             </>
           )}
         </NavbarWrap>
       )}
-      {isAuthenticated && (
+      {applicationReady && (
         <ConnectivityAndBreadcrumbWrap>
-          <BreadcrumbWrap status={status} persona={data.label} />
-          {status === 'fetched' && (
+          <BreadcrumbWrap
+            status={statusGetStatus}
+            persona={serverStatus.label}
+          />
+          {statusGetStatus === 'fetched' && (
             <ConnectivityWrap
-              serverStatus={status}
+              serverStatus={statusGetStatus}
               origin={configuredOrigin}
-              persona={data.label}
+              persona={serverStatus.label}
             />
           )}
         </ConnectivityAndBreadcrumbWrap>
       )}
-      {isAuthenticated && (
+      {applicationReady && (
         <ContentSelectorWrap>
           <ContentSelector
-            status={status}
+            status={statusGetStatus}
             origin={configuredOrigin}
-            persona={data.label}
+            persona={serverStatus.label}
           />
         </ContentSelectorWrap>
       )}
-      {status === 'error' && <ErrorModal visibility content={error} />}
+      {statusGetStatus === 'error' ||
+        (walletStatus === WALLET_STATUS.ERROR && (
+          <ErrorModal visibility content={statusGetError || walletPostError} />
+        ))}
     </>
   )
 }
