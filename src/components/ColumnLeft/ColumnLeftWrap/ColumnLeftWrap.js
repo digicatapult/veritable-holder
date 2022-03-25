@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import CredentialSetItem from '../CredentialSetItem'
 import useLoopedGetCredentials from '../../../interface/hooks/use-get-looped-credentials'
 
-export default function ColumnLeftWrap({ origin, records }) {
+export default function ColumnLeftWrap({ origin }) {
   const [dataCredentialSets, setDataCredentialSets] = useState([])
   const [status, error, startGetCredentialSetsHandler] =
     useLoopedGetCredentials()
@@ -37,12 +37,7 @@ export default function ColumnLeftWrap({ origin, records }) {
               {dataCredentialSets.length > 0 &&
                 dataCredentialSets.map((i, k) => (
                   <div key={k} className="card mb-3">
-                    <CredentialSetItem
-                      origin={origin}
-                      item={i}
-                      index={k}
-                      records={records}
-                    />
+                    <CredentialSetItem origin={origin} item={i} index={k} />
                   </div>
                 ))}
             </div>

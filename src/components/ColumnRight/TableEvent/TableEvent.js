@@ -46,7 +46,7 @@ export default function TableEvent({ i, j, k, eId, cId, event }) {
   }
   const getDefId = (byFormatObj) => {
     const defId = byFormatObj.pres?.indy?.identifiers[0]?.cred_def_id
-    return `${defId?.substr(0, 2)}…${defId?.substr(-2)}`
+    return defId ? `${defId.substr(0, 2)}…${defId.substr(-2)}` : `N/A`
   }
 
   return (
