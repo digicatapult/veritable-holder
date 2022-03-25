@@ -29,7 +29,7 @@
     "lint:fix": "$(npm bin)/eslint src/**/*.js --fix",
     "test:dev": "npx cypress open-ct",
     "test:component": "npx cypress run-ct --spec 'src/**/*'",
-    "test:integration": "npx cypress run --spec 'cypress/integration/*'",
+    "test:integration": "npx cypress run",
     "eject": "react-scripts eject"
   },
   "browserslist": {

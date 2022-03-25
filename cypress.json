@@ -1,6 +1,7 @@
 {
-  "testFiles": "{./src/**/*.{test,spec}.*,./cypress/**/*.{test,spec}.*}",
-  "integrationFolder": "./",
+  "testFiles": "**/*.{spec,test}.js",
+  "integrationFolder": "cypress/integration",
+  "videoUploadOnPasses=false": false,
   "component": {
     "componentFolder": "src",
     "testFiles": "**/*.{test,spec}.{js,ts,jsx,tsx}",
