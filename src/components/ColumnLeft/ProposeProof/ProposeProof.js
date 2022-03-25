@@ -18,7 +18,7 @@ export default function ProposeProof({
   const [isDisconnected, setIsDisconnected] = useState(false)
   const [lastProposalId, setLastProposalId] = useState('')
   const [statusSendProposal, setStatusSendProposal] = useState('')
-  const [alreadyProposed, setAlreadyProposed] = useState('')
+  const [alreadyProposed, setAlreadyProposed] = useState(undefined)
 
   const [statusConnId, errorConnId, startFetchConnIdHandler] = useGetConn()
   const [errorProposal, startFetchHandler] = usePostPresentProofSendProposal()
@@ -71,30 +71,32 @@ export default function ProposeProof({
 
   return (
     <>
-      <div className="text-center p-2">
-        <button
-          type="button"
-          className="btn btn-primary w-50"
-          onClick={submitHandler}
-          disabled={alreadyProposed}
-        >
-          {statusConnId === 'fetching' && (
-            <>
-              <i className="fa fa-spinner fa-pulse"></i>
-            </>
-          )}
-          &nbsp;Request License&nbsp;
-          {isDisconnected && (
-            <>
-              <span className="small">
-                ( &nbsp;
-                <i className="fa fa-exclamation-triangle"></i>
-                &nbsp; disconnected )
-              </span>
-            </>
-          )}
-        </button>
-      </div>
+      {alreadyProposed !== undefined && (
+        <div className="text-center p-2">
+          <button
+            type="button"
+            className="btn btn-primary w-50"
+            onClick={submitHandler}
+            disabled={alreadyProposed}
+          >
+            {statusConnId === 'fetching' && (
+              <>
+                <i className="fa fa-spinner fa-pulse"></i>
+              </>
+            )}
+            &nbsp;Request License&nbsp;
+            {isDisconnected && (
+              <>
+                <span className="small">
+                  ( &nbsp;
+                  <i className="fa fa-exclamation-triangle"></i>
+                  &nbsp; disconnected )
+                </span>
+              </>
+            )}
+          </button>
+        </div>
+      )}
       <div
         className={`${
           errorConnId || errorProposal || errorRecordEvents

@@ -6,7 +6,7 @@
  */
 import ProposeProof from '../ProposeProof'
 
-export default function CredentialSetItem({ item, index }) {
+export default function CredentialSetItem({ origin, item, index }) {
   const {
     cred_def_id,
     attrs: {
