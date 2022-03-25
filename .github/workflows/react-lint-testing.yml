@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run cypress component tests
-        timeout-minutes: 2
+        timeout-minutes: 5
         uses: cypress-io/github-action@v2
         with:
           browser: chrome

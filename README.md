@@ -16,12 +16,14 @@ npm run start
 
 ## Testing
 
+> Framework - [CYPRESS](https://docs.cypress.io/)
 There are two types of tests one for React component as per individual basis and integration for testing different flows. The idea is that component test will be triggered after update to branch excluding **main** and integration for release build or after it has been merged with **main**.
 
-Framework - [CYPRESS](https://docs.cypress.io/)
 
 > Run component tests -> `npm run test:component`
+
 > Run integration tests -> `npm run test:integration`
+
 > Plugin configured in `cyopress/plugins/` folder
 
 - **Component tests**
