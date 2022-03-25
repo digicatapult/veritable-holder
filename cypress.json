@@ -1,0 +1,10 @@
+{
+  "testFiles": "{./src/**/*.{test,spec}.*,./cypress/**/*.{test,spec}.*}",
+  "integrationFolder": "./",
+  "component": {
+    "componentFolder": "src",
+    "testFiles": "**/*.{test,spec}.{js,ts,jsx,tsx}",
+    "defaultCommandTimeout": 10000,
+    "baseUrl": "http://localhost:3000"
+  }
+}
