@@ -1,7 +1,9 @@
 {
   "testFiles": "**/*.{spec,test}.js",
   "integrationFolder": "cypress/integration",
-  "videoUploadOnPasses=false": false,
+  "videoUploadOnPasses": false,
+  "requestTimeout": 10,
+  "screenshotOnRunFailure": true,
   "component": {
     "componentFolder": "src",
     "testFiles": "**/*.{test,spec}.{js,ts,jsx,tsx}",

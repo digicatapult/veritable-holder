@@ -24,7 +24,7 @@ jobs:
       - name: Run lint
         run: npm run lint
       - name: Run component tests
-        run: npm run test:component 
+        run: npm t
       - name: Print tag if present
         run: |
           echo "Tags: $TAGS"
