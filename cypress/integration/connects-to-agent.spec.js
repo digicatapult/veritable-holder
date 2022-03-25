@@ -1,35 +1,39 @@
 import * as env from '../../src/utils/env'
 
-// TODO update fixtures
+/*
+  This is the most basic configuration so please
+  threat the below tests as placeholders
+*/
 describe('Integration tests for Holder persona', () => {
+  const url = env.HOLDER_ORIGIN
   beforeEach(() => {
     cy.intercept(
       {
         method: 'GET',
-        url: `${env.HOLDER_ORIGIN}/status?`,
+        url: `${url}/status?`,
       },
       { fixture: 'agent-status.json'}
     ).as('agentStatus')
     cy.intercept(
       {
         method: 'GET',
-        url: `${env.HOLDER_ORIGIN}/connections?`,
+        url: `${url}/connections?`,
       },
       []
     ).as('agentConnections')
     cy.intercept(
       {
         method: 'GET',
-        url: `${env.HOLDER_ORIGIN}/credentials?`,
+        url: `${url}/credentials?`,
       },
       []
     ).as('agentCredentials')
     cy.intercept(
       {
         method: 'GET',
-        url: `${env.HOLDER_ORIGIN}/resent-proof-2.0/records?`,
+        url: `${url}/resent-proof-2.0/records?`,
       },
-      []
+      { results: []}
     ).as('agentRecords')
   })
 
@@ -40,6 +44,18 @@ describe('Integration tests for Holder persona', () => {
 
     it('renders DOM', () => {
       cy.get('#root').should('exist')
+    })
+    
+    describe('if agent does not respond', () => {
+      it('renders a modal along with the error message', () => {
+        cy.intercept('GET', `${url}/status?`, { forceNetworkError: true }).as('agentStatusErr')
+        cy.get('[data-cy=switch-to-custom-endpoint]').click()
+        cy.wait('@agentStatusErr').should('have.property', 'error')
+          // assert for modal etc
+          // cy.get('[data-cy=modal-server-error]')
+          //   .should('exist')
+          //   .contains(networkErrorMessage)
+      })
     })
     
     describe('connection to agent', () => {
@@ -67,4 +83,5 @@ describe('Integration tests for Holder persona', () => {
      })
     })
   })
+
 })
