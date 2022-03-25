@@ -49,6 +49,7 @@ export default function NavbarDropdownForm({
                 />
                 <div className="w-100">
                   <button
+                    data-cy="switch-to-custom-endpoint"
                     onClick={clickSwitchToDefaultHandler}
                     className="btn btn-primary btn-small w-100 small mb-3 mt-2"
                     href="#/"
