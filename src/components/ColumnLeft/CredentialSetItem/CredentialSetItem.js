@@ -17,7 +17,7 @@ export default function CredentialSetItem({ item, index }) {
       type,
       title,
       subtitle,
-      expiration_dateint: expiry,
+      expiration_dateint: d,
     },
   } = item
 
@@ -125,19 +125,13 @@ export default function CredentialSetItem({ item, index }) {
             <div
               className={`col-md-6 text-success ${
                 new Date(
-                  `${expiry.substr(0, 4)}-${expiry.substr(
-                    4,
-                    2
-                  )}-${expiry.substr(6, 2)}`
+                  `${d.substr(0, 4)}-${d.substr(4, 2)}-${d.substr(6, 2)}`
                 ) < new Date()
                   ? 'text-danger'
                   : ''
               }`}
             >
-              {`${expiry.substr(0, 4)}-${expiry.substr(4, 2)}-${expiry.substr(
-                6,
-                2
-              )}`}
+              {`${d.substr(0, 4)}-${d.substr(4, 2)}-${d.substr(6, 2)}`}
             </div>
           </div>
         </li>
