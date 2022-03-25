@@ -14,6 +14,28 @@ To start the application, run:
 npm run start
 ```
 
+## Testing
+
+There are two types of tests one for React component as per individual basis and integration for testing different flows. The idea is that component test will be triggered after update to branch excluding **main** and integration for release build or after it has been merged with **main**.
+
+> Run component tests -> `npm run test:component`
+> Run integration tests -> `npm run test:integration`
+> Plugin configured in `cyopress/plugins/` folder
+
+- **Component tests**
+  - Uses webpack so does not require a build and run [cypress/webpack-dev-server](https://npm.io/package/@cypress/webpack-dev-server)
+  - Each component can be tested in isolocation
+- **Integration**
+  - Will perform a build and run of it.
+  - Part of release stage
+
+#### Local Development
+
+Cypress can also be utilised in local development when you require other services you can mock out `api` responses and run under the watch flag. 
+```sh
+npm run test:dev
+```
+
 ## Interacting with the ACA Swagger API Layer directly
 
 **[README](https://gist.github.com/andysign/145188bc361ea9dd7e44db1a5a8a282a)**

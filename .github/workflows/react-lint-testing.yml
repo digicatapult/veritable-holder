@@ -45,18 +45,8 @@ jobs:
         timeout-minutes: 2
         uses: cypress-io/github-action@v2
         with:
-          spec: src/*
           browser: chrome
           record: false
           headless: true
-          start: npm start
-          wait-on: 'http://localhost:3000'
-      - name: Run cypress integration tests
-        uses: cypress-io/github-action@v2
-        with:
-          spec: cypress/integration/*
-          browser: chrome
-          record: false
-          headless: true
-          start: npm start
+          start: npm run test:component
           wait-on: 'http://localhost:3000'
