@@ -57,9 +57,9 @@ export default function ConnectionAvatar({ data, onDelete }) {
     <>
       {data?.results
         ?.filter((d) => d.state === 'active')
-        .map((c, k) => {
+        .map((c) => {
           return (
-            <li key={k} className="nav-item small">
+            <li key={c.connection_id} className="nav-item small">
               <div className="btn-group">
                 <a
                   className="p-1 m-1 text-primary bg-light"
@@ -100,9 +100,9 @@ export default function ConnectionAvatar({ data, onDelete }) {
                         </div>
                       </li>
 
-                      {arrReduceEntries(c).map(([key, val], index) => (
+                      {arrReduceEntries(c).map(([key, val]) => (
                         <li
-                          key={index}
+                          key={key}
                           className="list-group-item small text-break"
                         >
                           <div className="row">

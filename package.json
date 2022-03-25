@@ -28,7 +28,7 @@
     "lint": "$(npm bin)/eslint src/**/*.js",
     "lint:fix": "$(npm bin)/eslint src/**/*.js --fix",
     "test:dev": "npx cypress open-ct",
-    "test:unit": "npx cypress run-ct --spec 'src/**/*'",
+    "test:component": "npx cypress run-ct --spec 'src/**/*'",
     "test:integration": "npx cypress run --spec 'cypress/**/*'",
     "eject": "react-scripts eject"
   },

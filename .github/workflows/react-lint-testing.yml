@@ -41,13 +41,13 @@ jobs:
         uses: actions/checkout@v1
       - name: Install dependencies
         run: npm ci
-      - name: Run cypress unit tests
+      - name: Run cypress component tests
         timeout-minutes: 2
         uses: cypress-io/github-action@v2
         with:
           spec: src/*
           browser: chrome
-          record: true
+          record: false
           headless: true
           start: npm start
           wait-on: 'http://localhost:3000'
@@ -55,10 +55,8 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           spec: cypress/integration/*
-
-      
           browser: chrome
-          record: true
+          record: false
           headless: true
           start: npm start
           wait-on: 'http://localhost:3000'
