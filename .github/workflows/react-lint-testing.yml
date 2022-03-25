@@ -10,9 +10,8 @@ on:
         type: boolean
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-20.04
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -35,3 +34,24 @@ jobs:
           echo "Tags: $TAGS"
         env:
           TAGS: ${{ github.event.inputs.tags }}
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install dependencies
+        run: npm ci
+      - name: Run cypress unit tests
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          headless: true
+          start: npm run test:unit
+          wait-on: 'http://localhost:3000'
+      - name: Run cypress integration tests
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          headless: true
+          start: npm run test:unit
+          wait-on: 'http://localhost:3000'

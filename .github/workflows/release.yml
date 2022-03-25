@@ -53,6 +53,21 @@ jobs:
       - name: Lint
         run: npm run lint
 
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install dependencies
+        run: npm ci
+      - name: Run cypress integration tests
+        uses: cypress-io/github-action@v2
+        with:
+          browser: chrome
+          headless: true
+          start: npm run test:integration
+          wait-on: 'http://localhost:3000'
+
   check-version:
     name: 'Check version'
     runs-on: ubuntu-latest
