@@ -24,14 +24,15 @@ There are two types of tests one for React component as per individual basis and
 
 > Run integration tests -> `npm run test:integration`
 
-> Plugin configured in `cyopress/plugins/` folder
+> Plugins are configured in `cyopress/plugins/` folder
 
 - **Component tests**
   - Uses webpack so does not require a build and run [cypress/webpack-dev-server](https://npm.io/package/@cypress/webpack-dev-server)
   - Each component can be tested in isolocation
 - **Integration**
-  - Will perform a build and run of it.
-  - Part of release stage
+  - Will start as a service
+  - Allows us to mock endpoints of external parties
+  - Part of Github checks for all branches excluding **main**
 
 #### Local Development
 
