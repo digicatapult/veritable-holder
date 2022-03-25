@@ -24,7 +24,7 @@ export default function ProposeProof({
   const [errorProposal, startFetchHandler] = usePostPresentProofSendProposal()
   const [statusRecordEvents, errorRecordEvents, startGetRecordsHandler] =
     useGetLoopedPresentProofRecords()
-  console.log(proposals)
+
   useEffect(() => {
     const intervalRecordsFetch = startGetRecordsHandler(
       origin,

@@ -7,8 +7,8 @@ import useGetLoopedPresentProofRecords from '../../../interface/hooks/use-get-lo
 
 export default function ColumnRightWrap({ origin }) {
   /**
-        const dataConnRecordEventsExample = [ { "conn_id": [ { "ex_id_01":["event123"] }, { "ex_id_02":[".."] } ] } ]
-     */
+		const dataConnRecordEventsExample = [ { "conn_id": [ { "ex_id_01":["event123"] }, { "ex_id_02":[".."] } ] } ]
+	*/
 
   const [dataConnRecordEvents, setDataConnRecordEvents] = useState([])
   const [statusRecordEvents, errorRecordEvents, startGetRecordsHandler] =
