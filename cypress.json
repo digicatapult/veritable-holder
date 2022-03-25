@@ -7,4 +7,5 @@
     "defaultCommandTimeout": 10000,
     "baseUrl": "http://localhost:3000"
   }
+  // TODO disable video and screenshot exports outside of local dev
 }
