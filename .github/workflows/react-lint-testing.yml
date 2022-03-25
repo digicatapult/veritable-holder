@@ -41,13 +41,12 @@ jobs:
         uses: actions/checkout@v1
       - name: Install dependencies
         run: npm ci
-      - name: Start Webpack
-        run: npm start
       - name: Run cypress unit tests
         uses: cypress-io/github-action@v2
         with:
           browser: chrome
           headless: true
+          build: npm run start
           start: npm run test:unit
           wait-on: 'http://localhost:3000'
       - name: Run cypress integration tests
@@ -55,5 +54,6 @@ jobs:
         with:
           browser: chrome
           headless: true
+          build: npm run start
           start: npm run test:unit
           wait-on: 'http://localhost:3000'
