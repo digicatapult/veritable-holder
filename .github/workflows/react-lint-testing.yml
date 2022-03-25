@@ -42,19 +42,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run cypress unit tests
+        timeout-minutes: 2
         uses: cypress-io/github-action@v2
         with:
+          spec: src/*
           browser: chrome
+          record: true
           headless: true
-          build: npm run build
-          start: npm run test:unit
+          start: npm start
           wait-on: 'http://localhost:3000'
       - name: Run cypress integration tests
         uses: cypress-io/github-action@v2
         with:
+          spec: cypress/integration/*
+
+      
           browser: chrome
+          record: true
           headless: true
-          build: npm run build 
           start: npm start
           wait-on: 'http://localhost:3000'
-        run: npm run test:integration
