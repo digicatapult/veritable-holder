@@ -25,7 +25,7 @@ export default function Connections({ data }) {
           const s = c.state
           const _ = c.connection_id.split('-')
           return (
-            <li key={i} className="list-group-item small p-1">
+            <li key={c.connection_id} className="list-group-item small p-1">
               <small>{i} | &nbsp;</small>
               <small>{t} | &nbsp;</small>
               <small>{r} | &nbsp;</small>

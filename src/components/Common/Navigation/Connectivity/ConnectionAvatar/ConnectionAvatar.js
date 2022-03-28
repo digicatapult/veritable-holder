@@ -3,17 +3,6 @@
  * @returns A list of connection items.
  */
 export default function ConnectionAvatar({ data, onDelete }) {
-  /*
-		'[{
-		"accept":"auto","alias":"alice2alice","connection_id":"55127fdb-e688-4c23-b226-a84448a5e4f8",
-		"connection_protocol":"connections/1.0","created_at":"2021-10-21 01:02:44.328532Z",
-		"invitation_key":"FtUCrvxbB6AeQSzCGqgxbwFt1T1CGJa8TZzGuXgBRESo","invitation_mode":"once",
-		"invitation_msg_id":"de2d27d6-6af7-4f91-b2b4-df604171a918","my_did":"38Uozz8ZuGkDDKpo396m6L",
-		"request_id":"cc745646-79cb-4141-9e32-cb6c712ae8db","rfc23_state":"completed",
-		"routing_state":"none","state":"active","their_did":"NSJTc1FjBgpnBekR1hBJJv",
-		"their_label":"Consortiq","their_role":"inviter","updated_at":"2021-10-21 01:02:44.596145Z"
-		}]'
-	*/
   const isDate = (d) => {
     return new Date(d) !== 'Invalid Date' && !isNaN(new Date(d))
   }
@@ -57,9 +46,9 @@ export default function ConnectionAvatar({ data, onDelete }) {
     <>
       {data?.results
         ?.filter((d) => d.state === 'active')
-        .map((c, k) => {
+        .map((c) => {
           return (
-            <li key={k} className="nav-item small">
+            <li key={c.connection_id} className="nav-item small">
               <div className="btn-group">
                 <a
                   className="p-1 m-1 text-primary bg-light"
@@ -100,9 +89,9 @@ export default function ConnectionAvatar({ data, onDelete }) {
                         </div>
                       </li>
 
-                      {arrReduceEntries(c).map(([key, val], index) => (
+                      {arrReduceEntries(c).map(([key, val]) => (
                         <li
-                          key={index}
+                          key={key}
                           className="list-group-item small text-break"
                         >
                           <div className="row">

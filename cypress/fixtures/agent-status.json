@@ -1,0 +1,13 @@
+{
+  "version": "0.7.3",
+  "label": "holder.agent",
+  "conductor": {
+    "in_sessions": 0,
+    "out_encode": 0,
+    "out_deliver": 0,
+    "task_active": 1,
+    "task_done": 1,
+    "task_failed": 0,
+    "task_pending": 0
+  }
+}
