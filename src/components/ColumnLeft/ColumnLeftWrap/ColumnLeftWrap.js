@@ -11,7 +11,6 @@ export default function ColumnLeftWrap({ origin }) {
   const [status, error, startGetCredentialSetsHandler] =
     useLoopedGetCredentials()
   useEffect(() => {
-    const setStoreDataFn = (resData) => setDataCredentialSets(resData)
     const intervalIdFetch = startGetCredentialSetsHandler(
       origin,
       setStoreDataFn
@@ -21,6 +20,16 @@ export default function ColumnLeftWrap({ origin }) {
       return clearInterval(intervalIdFetch)
     }
   }, [origin, status, startGetCredentialSetsHandler])
+
+  const setStoreDataFn = (credentials) => {
+    const alreadyLicensedTests = new Set(
+      credentials.map((c) => c.attrs.test_cert_referent)
+    )
+    const latestCredentials = credentials.filter((c) => {
+      return !alreadyLicensedTests.has(c.referent)
+    })
+    setDataCredentialSets(latestCredentials)
+  }
   return (
     <>
       <div className="col-md-6">
@@ -37,7 +46,7 @@ export default function ColumnLeftWrap({ origin }) {
               {dataCredentialSets.length > 0 &&
                 dataCredentialSets.map((i, k) => (
                   <div key={k} className="card mb-3">
-                    <CredentialSetItem item={i} index={k} />
+                    <CredentialSetItem origin={origin} item={i} index={k} />
                   </div>
                 ))}
             </div>
