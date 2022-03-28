@@ -9,8 +9,8 @@ export default function useGetLoopedPresentProofRecords() {
   const statusOptions = ['started', 'error', 'stopped']
   const [status, setStatus] = useState(statusOptions[0])
   const [error, setError] = useState(null)
-  const onStartFetch = useCallback((origin, setStoreData) => {
-    const params = {}
+  const onStartFetch = useCallback((origin, state, setStoreData) => {
+    const params = state ? `state=${state}` : {}
     const intervalId = setInterval(() => {
       getLooped(
         origin,
@@ -21,7 +21,7 @@ export default function useGetLoopedPresentProofRecords() {
         setStoreData,
         transformData
       )
-    }, 1000)
+    }, 3000)
     return intervalId
   }, [])
   return [status, error, onStartFetch]

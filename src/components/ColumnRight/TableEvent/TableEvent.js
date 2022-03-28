@@ -13,6 +13,11 @@ export default function TableEvent({ i, j, k, eId, cId, event }) {
   }
   const getPredicate = (byFormatObj) => {
     const predicatesObj = byFormatObj?.pres_request?.indy?.requested_predicates
+
+    if (!predicatesObj) {
+      return `N/A`
+    }
+
     const firstPredicate = Object.entries(predicatesObj)[0]
     const predicateKeyStr = firstPredicate[0].split('_')[1]
     const predicateName =
@@ -22,7 +27,11 @@ export default function TableEvent({ i, j, k, eId, cId, event }) {
     return predicateName + predicateType + predicateVal
   }
   const getEventIcon = (state) => {
-    if (state === 'request-sent' || state === 'presentation-sent') {
+    if (
+      state === 'proposal-sent' ||
+      state === 'request-sent' ||
+      state === 'presentation-sent'
+    ) {
       return 'fa-envelope text-warning'
     }
     if (state === 'presentation-received' || state === 'request-received') {
@@ -41,7 +50,7 @@ export default function TableEvent({ i, j, k, eId, cId, event }) {
   }
   const getDefId = (byFormatObj) => {
     const defId = byFormatObj.pres?.indy?.identifiers[0]?.cred_def_id
-    return `${defId?.substr(0, 2)}…${defId?.substr(-2)}`
+    return defId ? `${defId.substr(0, 2)}…${defId.substr(-2)}` : `N/A`
   }
 
   return (

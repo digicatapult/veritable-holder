@@ -49,7 +49,7 @@ export default function ColumnRightWrap({ origin }) {
         return prevData
       })
     }
-    const intervalRecordsFetch = startGetRecordsHandler(origin, setDataFn)
+    const intervalRecordsFetch = startGetRecordsHandler(origin, null, setDataFn)
     if (statusRecordEvents !== 'started') clearInterval(intervalRecordsFetch)
     return function clear() {
       return clearInterval(intervalRecordsFetch)
