@@ -47,7 +47,6 @@ describe('Integration tests for Holder persona', () => {
   
   beforeEach(() => {
     mockAgentEndpoints(url)
-    console.log(Cypress.env())
   })
 
   describe('happy path', () => {
