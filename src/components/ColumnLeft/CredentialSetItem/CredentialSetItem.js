@@ -4,6 +4,7 @@
  * The `card` element has a `card-header` element with a `text-white bg-secondary`
  * class.
  */
+import { AUTHORITY_LABEL } from '../../../utils/env'
 import ProposeProof from '../ProposeProof'
 
 export default function CredentialSetItem({ origin, item, index }) {
@@ -20,7 +21,7 @@ export default function CredentialSetItem({ origin, item, index }) {
       expiration_dateint: d,
     },
   } = item
-
+  const isLicense = cred_def_id.includes(AUTHORITY_LABEL)
   return (
     /*
 		const itemExample = {
@@ -37,7 +38,13 @@ export default function CredentialSetItem({ origin, item, index }) {
 		}
 		*/
     <>
-      <div className="card-header text-white bg-secondary">
+      <div
+        className={
+          isLicense
+            ? 'card-header text-white bg-primary'
+            : 'card-header text-white bg-secondary'
+        }
+      >
         Credential Wallet Entry #{index + 1}
       </div>
       <div className="card-body">
@@ -83,40 +90,50 @@ export default function CredentialSetItem({ origin, item, index }) {
         </div>
       </div>
       <ul className="list-group list-group-flush">
-        <li className="list-group-item">
-          <div className="row small text-dark">
-            <div className="col-md-6 text-uppercase text-muted">Name:</div>
-            <div className="col-md-6">{name}</div>
-          </div>
-        </li>
-        <li className="list-group-item">
-          <div className="row small text-dark">
-            <div className="col-md-6 text-uppercase text-muted">Surname:</div>
-            <div className="col-md-6">{surname}</div>
-          </div>
-        </li>
+        {!isLicense && (
+          <>
+            <li className="list-group-item">
+              <div className="row small text-dark">
+                <div className="col-md-6 text-uppercase text-muted">Name:</div>
+                <div className="col-md-6">{name}</div>
+              </div>
+            </li>
+            <li className="list-group-item">
+              <div className="row small text-dark">
+                <div className="col-md-6 text-uppercase text-muted">
+                  Surname:
+                </div>
+                <div className="col-md-6">{surname}</div>
+              </div>
+            </li>
+          </>
+        )}
         <li className="list-group-item">
           <div className="row small text-dark">
             <div className="col-md-6 text-uppercase text-muted">Type:</div>
             <div className="col-md-6">A{type} Open Category</div>
           </div>
         </li>
-        <li className="list-group-item">
-          <div className="row small text-dark">
-            <div className="col-md-6 text-uppercase text-muted">
-              Certificate Title:
-            </div>
-            <div className="col-md-6">{title}</div>
-          </div>
-        </li>
-        <li className="list-group-item">
-          <div className="row small text-dark">
-            <div className="col-md-6 text-uppercase text-muted">
-              Certificate Subtitle:
-            </div>
-            <div className="col-md-6">{subtitle}</div>
-          </div>
-        </li>
+        {!isLicense && (
+          <>
+            <li className="list-group-item">
+              <div className="row small text-dark">
+                <div className="col-md-6 text-uppercase text-muted">
+                  Certificate Title:
+                </div>
+                <div className="col-md-6">{title}</div>
+              </div>
+            </li>
+            <li className="list-group-item">
+              <div className="row small text-dark">
+                <div className="col-md-6 text-uppercase text-muted">
+                  Certificate Subtitle:
+                </div>
+                <div className="col-md-6">{subtitle}</div>
+              </div>
+            </li>
+          </>
+        )}
         <li className="list-group-item">
           <div className="row small text-dark">
             <div className="col-md-6 text-uppercase text-muted">
@@ -136,7 +153,7 @@ export default function CredentialSetItem({ origin, item, index }) {
           </div>
         </li>
       </ul>
-      <ProposeProof origin={origin} item={item} />
+      {!isLicense && <ProposeProof origin={origin} item={item} />}
     </>
   )
 }

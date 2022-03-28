@@ -27,7 +27,11 @@ export default function TableEvent({ i, j, k, eId, cId, event }) {
     return predicateName + predicateType + predicateVal
   }
   const getEventIcon = (state) => {
-    if (state === 'request-sent' || state === 'presentation-sent') {
+    if (
+      state === 'proposal-sent' ||
+      state === 'request-sent' ||
+      state === 'presentation-sent'
+    ) {
       return 'fa-envelope text-warning'
     }
     if (state === 'presentation-received' || state === 'request-received') {
