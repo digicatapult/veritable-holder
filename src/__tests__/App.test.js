@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from '@cypress/react'
-import App from '../App'
+import App from '../components/Core/AppCore'
 
 describe('App.js', () => {
   beforeEach(() => {
@@ -8,6 +8,6 @@ describe('App.js', () => {
   })
 
   it('renders App component', () => {
-    cy.get('[data-cy=app]').should('exist').contains('Drone Pilot')
+    cy.get('[data-cy=app-core]').should('exist').contains('Drone Pilot')
   })
 })
