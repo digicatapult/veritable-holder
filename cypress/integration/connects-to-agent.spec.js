@@ -4,37 +4,61 @@ import * as env from '../../src/utils/env'
   This is the most basic configuration so please
   threat the below tests as placeholders
 */
+function mockAuth0Endpoints() {
+  cy.intercept(
+    {
+      method: 'POST',
+      url: `https://${env.AUTH0_DOMAIN}/oauth/u/login?state=*`,
+    },
+    { fixture: 'auth0-token.json' },
+  )
+  cy.intercept(
+    {
+      method: 'POST',
+      url: `https://${env.AUTH0_DOMAIN}/oauth/token`,
+    },
+    { fixture: 'auth0-token.json' },
+  )
+}
+
+function mockAgentEndpoints(url) {
+  cy.intercept(
+    {
+      method: 'GET',
+      url: `${url}/status?`,
+    },
+    { fixture: 'agent-status.json'}
+  ).as('agentStatus')
+  cy.intercept(
+    {
+      method: 'GET',
+      url: `${url}/connections?`,
+    },
+    []
+  ).as('agentConnections')
+  cy.intercept(
+    {
+      method: 'GET',
+      url: `${url}/credentials?`,
+    },
+    []
+  ).as('agentCredentials')
+  cy.intercept(
+    {
+      method: 'GET',
+      url: `${url}/resent-proof-2.0/records?`,
+    },
+    { results: []}
+  ).as('agentRecords')
+}
+
 describe('Integration tests for Holder persona', () => {
   const url = env.HOLDER_ORIGIN
+  before(() => {
+    mockAuth0Endpoints()
+  })
   beforeEach(() => {
-    cy.intercept(
-      {
-        method: 'GET',
-        url: `${url}/status?`,
-      },
-      { fixture: 'agent-status.json'}
-    ).as('agentStatus')
-    cy.intercept(
-      {
-        method: 'GET',
-        url: `${url}/connections?`,
-      },
-      []
-    ).as('agentConnections')
-    cy.intercept(
-      {
-        method: 'GET',
-        url: `${url}/credentials?`,
-      },
-      []
-    ).as('agentCredentials')
-    cy.intercept(
-      {
-        method: 'GET',
-        url: `${url}/resent-proof-2.0/records?`,
-      },
-      { results: []}
-    ).as('agentRecords')
+    mockAgentEndpoints(url)
   })
 
   describe('happy path', () => {

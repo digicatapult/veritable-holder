@@ -4,6 +4,7 @@
   "videoUploadOnPasses": false,
   "requestTimeout": 10000,
   "screenshotOnRunFailure": true,
+  "chromeWebSecurity": false,
   "component": {
     "componentFolder": "src",
     "testFiles": "**/*.{test,spec}.{js,ts,jsx,tsx}",
