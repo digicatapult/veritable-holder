@@ -4,6 +4,7 @@ import * as env from '../../src/utils/env'
   This is the most basic configuration so please
   threat the below tests as placeholders
 */
+
 function mockAgentEndpoints(url) {
   cy.intercept(
     {
@@ -37,18 +38,21 @@ function mockAgentEndpoints(url) {
 
 describe('Integration tests for Holder persona', () => {
   const url = env.HOLDER_ORIGIN
+  before(() => {
+    cy.visit('http://localhost:3000')
+    cy.get('#username').clear().type(Cypress.env('TEST_USERNAME'))
+    cy.get('#password').clear().type(Cypress.env('TEST_PASSWORD'));
+    cy.get('.cf11996fb.c94d14336').submit();
+  })
+  
   beforeEach(() => {
     mockAgentEndpoints(url)
+    console.log(Cypress.env())
   })
 
   describe('happy path', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000')
-      if (!cy.contains('Drone Pilot')) {
-        cy.get('.auth0-lock-input-username .auth0-lock-input').clear().type('EMAIL');
-        cy.get('.auth0-lock-input-password .auth0-lock-input').clear().type('Password');
-        cy.get('.auth0-lock-submit').click();
-      }
     })
 
     it('renders DOM', () => {
