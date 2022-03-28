@@ -25,19 +25,6 @@ export default async function get(
     setStatus('fetching')
     const res = await fetch(url, { method, headers })
     if (res.ok) {
-      /* TODO update response to be holder (POC)
-      conductor:
-        in_sessions: 0
-        out_deliver: 0
-        out_encode: 0
-        task_active: 1
-        task_done: 11947
-        task_failed: 2
-        task_pending: 0
-        [[Prototype]]: Object
-      label: "licensee.agent" <<< HERE
-      version: "0.7.3"
-      */
       const data = await res.json()
       await new Promise((res) => setTimeout(res, 500))
       setStoreData(transformData(data))
