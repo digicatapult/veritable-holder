@@ -4,23 +4,6 @@ import * as env from '../../src/utils/env'
   This is the most basic configuration so please
   threat the below tests as placeholders
 */
-function mockAuth0Endpoints() {
-  cy.intercept(
-    {
-      method: 'POST',
-      url: `https://${env.AUTH0_DOMAIN}/oauth/u/login?state=*`,
-    },
-    { fixture: 'auth0-token.json' },
-  )
-  cy.intercept(
-    {
-      method: 'POST',
-      url: `https://${env.AUTH0_DOMAIN}/oauth/token`,
-    },
-    { fixture: 'auth0-token.json' },
-  )
-}
-
 function mockAgentEndpoints(url) {
   cy.intercept(
     {
@@ -54,9 +37,6 @@ function mockAgentEndpoints(url) {
 
 describe('Integration tests for Holder persona', () => {
   const url = env.HOLDER_ORIGIN
-  before(() => {
-    mockAuth0Endpoints()
-  })
   beforeEach(() => {
     mockAgentEndpoints(url)
   })
@@ -64,6 +44,11 @@ describe('Integration tests for Holder persona', () => {
   describe('happy path', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000')
+      if (!cy.contains('Drone Pilot')) {
+        cy.get('.auth0-lock-input-username .auth0-lock-input').clear().type('EMAIL');
+        cy.get('.auth0-lock-input-password .auth0-lock-input').clear().type('Password');
+        cy.get('.auth0-lock-submit').click();
+      }
     })
 
     it('renders DOM', () => {
