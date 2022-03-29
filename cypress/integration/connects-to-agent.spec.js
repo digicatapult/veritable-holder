@@ -18,14 +18,14 @@ function mockAgentEndpoints(url) {
       method: 'GET',
       url: `${url}/connections?`,
     },
-    []
+    { results: []}
   ).as('agentConnections')
   cy.intercept(
     {
       method: 'GET',
       url: `${url}/credentials?`,
     },
-    []
+    { results: []}
   ).as('agentCredentials')
   cy.intercept(
     {
