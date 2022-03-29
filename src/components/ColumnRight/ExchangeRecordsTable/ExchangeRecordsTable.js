@@ -17,7 +17,7 @@ export default function ExchangeRecordsTable({ dataConnRecordEvents }) {
         dataConnRecordEvents.map((o, i) => {
           const [cId, exRecordEvents] = Object.entries(o)[0]
           return (
-            <div key={i} className="my-2" id={`connection-${i}`}>
+            <div key={cId} className="my-2" id={`connection-${i}`}>
               {dataConnRecordEvents.length > 1 && (
                 <h6>
                   Events related to Connection Id <small>{cId}</small>:
@@ -28,7 +28,7 @@ export default function ExchangeRecordsTable({ dataConnRecordEvents }) {
                 exRecordEvents.map((p, j) => {
                   const [eId, events] = Object.entries(p)[0]
                   return (
-                    <div key={j} id={`wrapper-${i}-${j}`}>
+                    <div key={eId} id={`wrapper-${i}-${j}`}>
                       {events.length > 1 && (
                         <a
                           className="btn btn-dark text-left w-100"
@@ -48,7 +48,7 @@ export default function ExchangeRecordsTable({ dataConnRecordEvents }) {
                         >
                           {events.map((event, k) => (
                             <div
-                              key={k}
+                              key={event}
                               className="table-responsive"
                               id={`table-${i}-${j}-${k}`}
                             >

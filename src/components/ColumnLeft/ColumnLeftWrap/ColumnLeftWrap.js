@@ -45,7 +45,7 @@ export default function ColumnLeftWrap({ origin }) {
 
               {dataCredentialSets.length > 0 &&
                 dataCredentialSets.map((i, k) => (
-                  <div key={k} className="card mb-3">
+                  <div key={i} className="card mb-3">
                     <CredentialSetItem origin={origin} item={i} index={k} />
                   </div>
                 ))}
