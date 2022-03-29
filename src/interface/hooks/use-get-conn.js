@@ -1,11 +1,13 @@
 /**
  * It returns a function that will fetch the connection ID from the server.
  */
+import { useAuth0 } from '@auth0/auth0-react'
 import { useCallback, useState } from 'react'
 import get from '../api/helpers/get'
 
 export default function useGetConn() {
-  const path = '/connections'
+  const { getAccessTokenSilently } = useAuth0()
+  const path = '/v1/aca-py/connections'
   const statusOptions = ['idle', 'error', 'fetching', 'fetched']
   const [status, setStatus] = useState(statusOptions[0])
   const [error, setError] = useState(null)
@@ -26,6 +28,7 @@ export default function useGetConn() {
       get(
         fetchOrigin,
         path,
+        getAccessTokenSilently,
         params,
         setStatus,
         setError,
@@ -33,7 +36,7 @@ export default function useGetConn() {
         getConnectionByLabel
       )
     },
-    []
+    [getAccessTokenSilently]
   )
 
   return [status, error, onStartFetch]

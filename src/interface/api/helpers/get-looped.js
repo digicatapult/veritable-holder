@@ -11,6 +11,7 @@
 export default async function getLooped(
   origin,
   path,
+  getAuthToken,
   params,
   setStatus,
   setError,
@@ -22,6 +23,9 @@ export default async function getLooped(
   const method = 'GET'
   const headers = { Accept: 'application/json' }
   try {
+    const token = await getAuthToken()
+    headers['Authorization'] = `Bearer ${token}`
+
     const res = await fetch(url, { method, headers })
     if (res.ok) {
       const data = await res.json()

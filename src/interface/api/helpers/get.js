@@ -11,6 +11,7 @@
 export default async function get(
   origin,
   path,
+  getAuthToken,
   params,
   setStatus,
   setError,
@@ -23,6 +24,9 @@ export default async function get(
   const headers = { Accept: 'application/json' }
   try {
     setStatus('fetching')
+    const token = await getAuthToken()
+    headers['Authorization'] = `Bearer ${token}`
+
     const res = await fetch(url, { method, headers })
     if (res.ok) {
       const data = await res.json()

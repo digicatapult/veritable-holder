@@ -5,6 +5,9 @@ export const AUTHORITY_ORIGIN =
   process.env.REACT_APP_AUTHORITY_ORIGIN || 'http://localhost:8051'
 export const HOLDER_ORIGIN =
   process.env.REACT_APP_HOLDER_ORIGIN || 'http://localhost:8031'
+export const WALLET_TYPE =
+  process.env.REACT_APP_WALLET_TYPE ||
+  (process.env.NODE_ENV === 'development' ? 'in_memory' : 'indy')
 
 export const AUTH0_DOMAIN =
   process.env.REACT_APP_AUTH0_DOMAIN || 'veritable.eu.auth0.com'

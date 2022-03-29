@@ -1,11 +1,13 @@
 /**
  * This function is used to send with POST a proposal for a present proof
  */
+import { useAuth0 } from '@auth0/auth0-react'
 import { useCallback, useState } from 'react'
 import post from '../api/helpers/post'
 
 export default function usePostPresentProofSendProposal() {
-  const path = '/present-proof-2.0/send-proposal'
+  const { getAccessTokenSilently } = useAuth0()
+  const path = '/v1/aca-py/present-proof-2.0/send-proposal'
   const transformData = (retrievedData) => {
     return retrievedData.pres_ex_id
   }
@@ -54,6 +56,7 @@ export default function usePostPresentProofSendProposal() {
       post(
         origin,
         path,
+        getAccessTokenSilently,
         params,
         body,
         setStatus,
@@ -62,7 +65,7 @@ export default function usePostPresentProofSendProposal() {
         transformData
       )
     },
-    []
+    [getAccessTokenSilently]
   )
   return [error, onStartFetch]
 }

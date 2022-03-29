@@ -4,9 +4,11 @@
  * @returns The AppCore component is returning the NavbarWrap,
  * ConnectivityAndBreadcrumbWrap, and ContentSelectorWrap components.
  */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
 
 import useGetServerStatus from '../../../interface/hooks/use-get-server-status'
+import usePostMultitenancyWallet from '../../../interface/hooks/use-post-multitenancy-wallet'
 
 import NavbarWrap from './../../Common/Navigation/NavbarWrap'
 import LogoWrap from '../../Common/Navigation/LogoWrap'
@@ -19,13 +21,18 @@ import BreadcrumbWrap from '../../Common/Navigation/BreadcrumbWrap/BreadcrumbWra
 import ConnectivityWrap from '../../Common/Navigation/Connectivity/ConnectivityWrap'
 import ContentSelectorWrap from '../../Common/Misc/ContentSelectorWrap'
 import ContentSelector from '../../Common/Misc/ContentSelector'
+import WALLET_STATUS from '../../../utils/wallet-status'
 
-import { useAuth0 } from '@auth0/auth0-react'
-
-export default function AppCore({ agent, userDetails, userToken }) {
+export default function AppCore({ agent, userDetails }) {
   const [configuredOrigin, setConfiguredOrigin] = useState('')
-  const [data, setData] = useState({})
-  const [status, error, startFetchHandler] = useGetServerStatus()
+  const [serverStatus, setServerStatus] = useState({})
+  const [walletStatus, setWalletStatus] = useState(WALLET_STATUS.NOT_READY)
+
+  const [statusGetStatus, statusGetError, startGetStatusHandler] =
+    useGetServerStatus()
+  const [walletPostStatus, walletPostError, startWalletPostHandler] =
+    usePostMultitenancyWallet()
+
   const { logout } = useAuth0()
 
   const clickLogoutHandler = () => {
@@ -34,69 +41,70 @@ export default function AppCore({ agent, userDetails, userToken }) {
     logout({ returnTo })
   }
 
-  const saveOriginHandler = (insertedOrigin) => {
-    const setStoreDataFn = (resData) => {
-      setData(resData)
+  useEffect(() => {
+    if (walletPostStatus === 'error' && walletPostError === '409:Conflict') {
+      setWalletStatus(WALLET_STATUS.READY)
     }
+  }, [walletPostStatus, walletPostError])
+
+  const saveOriginHandler = (insertedOrigin) => {
     setConfiguredOrigin(insertedOrigin)
     if (insertedOrigin !== '') {
-      startFetchHandler(insertedOrigin, setStoreDataFn)
+      startGetStatusHandler(insertedOrigin, setServerStatus)
+      startWalletPostHandler(insertedOrigin, userDetails.name, setWalletStatus)
     }
   }
 
+  const applicationReady = walletStatus === WALLET_STATUS.READY
   return (
     <div data-cy="app-core">
       <NavbarWrap>
         <LogoWrap agent={agent} />
-        {status === 'idle' && !error && (
+        {statusGetStatus === 'idle' && !statusGetError && (
           <>
             <NavbarDropdownWrap
-              status={status}
+              status={statusGetStatus}
               agent={agent}
               onSaveOrigin={saveOriginHandler}
             />
-            <NavbarNavigationMenu status={status} />
+            <NavbarNavigationMenu status={statusGetStatus} />
             <NavbarProfile
-              status={status}
+              status={statusGetStatus}
               user={userDetails}
-              token={userToken}
               onClickLogout={clickLogoutHandler}
             />
           </>
         )}
-        {status === 'error' && (
+        {statusGetStatus === 'error' && (
           <>
-            <NavbarDropdownWrap status={status} agent={agent} />
-            <NavbarNavigationMenu status={status} />
+            <NavbarDropdownWrap status={statusGetStatus} agent={agent} />
+            <NavbarNavigationMenu status={statusGetStatus} />
             <NavbarProfile
-              status={status}
+              status={statusGetStatus}
               user={userDetails}
-              token={userToken}
               onClickLogout={clickLogoutHandler}
             />
           </>
         )}
-        {status === 'fetching' && !error && (
+        {statusGetStatus === 'fetching' && !statusGetError && (
           <>
-            <NavbarDropdownWrap status={status} agent={agent} />
-            <NavbarNavigationMenu status={status} />
+            <NavbarDropdownWrap status={statusGetStatus} agent={agent} />
+            <NavbarNavigationMenu status={statusGetStatus} />
             <NavbarProfile
-              status={status}
+              status={statusGetStatus}
               user={userDetails}
-              token={userToken}
               onClickLogout={clickLogoutHandler}
             />
           </>
         )}
-        {status === 'fetched' && !error && (
+        {statusGetStatus === 'fetched' && !statusGetError && (
           <>
-            <NavbarDropdownWrap status={status} agent={agent} />
-            <NavbarNavigationMenu status={status} />
+            <NavbarDropdownWrap status={statusGetStatus} agent={agent} />
+            <NavbarNavigationMenu status={statusGetStatus} />
             <NavbarProfile
-              status={status}
-              data={data}
+              status={statusGetStatus}
+              data={serverStatus}
               user={userDetails}
-              token={userToken}
               onClickLogout={clickLogoutHandler}
             />
           </>
@@ -104,26 +112,32 @@ export default function AppCore({ agent, userDetails, userToken }) {
       </NavbarWrap>
       {
         <ConnectivityAndBreadcrumbWrap>
-          <BreadcrumbWrap status={status} persona={data.label} />
-          {status === 'fetched' && (
+          <BreadcrumbWrap
+            status={statusGetStatus}
+            persona={serverStatus.label}
+          />
+          {statusGetStatus === 'fetched' && (
             <ConnectivityWrap
-              serverStatus={status}
+              serverStatus={statusGetStatus}
               origin={configuredOrigin}
-              persona={data.label}
+              persona={serverStatus.label}
             />
           )}
         </ConnectivityAndBreadcrumbWrap>
       }
-      {
+      {applicationReady && (
         <ContentSelectorWrap>
           <ContentSelector
-            status={status}
+            status={statusGetStatus}
             origin={configuredOrigin}
-            persona={data.label}
+            persona={serverStatus.label}
           />
         </ContentSelectorWrap>
-      }
-      {status === 'error' && <ErrorModal visibility content={error} />}
+      )}
+      {statusGetStatus === 'error' ||
+        (walletStatus === WALLET_STATUS.ERROR && (
+          <ErrorModal visibility content={statusGetError || walletPostError} />
+        ))}
     </div>
   )
 }
