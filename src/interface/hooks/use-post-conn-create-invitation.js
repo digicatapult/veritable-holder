@@ -10,7 +10,7 @@ import post from '../api/helpers/post'
 export default function usePostConnCreateInvitation() {
   const { getAccessTokenSilently } = useAuth0()
 
-  const path = '/v1/aca-py/connections/create-invitation'
+  const path = '/connections/create-invitation'
   const transformData = (retrievedData) => {
     const inputStr = retrievedData.invitation
     const inputJson = JSON.stringify(inputStr)
