@@ -39,6 +39,8 @@ function mockAgentEndpoints(url) {
 describe('Integration tests for Holder persona', () => {
   const url = env.HOLDER_ORIGIN
   before(() => {
+    cy.clearCookies()
+    cy.clearLocalStorage()
     cy.visit('http://localhost:3000')
     cy.get('#username').clear().type(Cypress.env('TEST_USERNAME'))
     cy.get('#password').clear().type(Cypress.env('TEST_PASSWORD'));
