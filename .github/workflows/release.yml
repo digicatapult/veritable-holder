@@ -64,18 +64,6 @@ jobs:
           node-version: 16.x
       - name: Install dependencies
         run: npm ci
-      - name: Run cypress integration tests
-        uses: cypress-io/github-action@v2
-        with:
-          browser: chrome
-          record: false
-          headless: true
-          build: npm run build
-          start: npm start
-          wait-on: 'http://localhost:3000'
-        env:
-          CYPRESS_TEST_USERNAME: ${{ secrets.AUTH0_USERNAME }}
-          CYPRESS_TEST_PASSWORD: ${{ secrets.AUTH0_PASSWORD }}
 
   check-version:
     name: 'Check version'

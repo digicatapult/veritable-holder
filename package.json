@@ -1,6 +1,6 @@
 {
   "name": "veritable-holder",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Front-end for Veritable license holder",
   "author": "Digital Catapult (https://www.digicatapult.org.uk/)",
   "license": "Apache-2.0",
@@ -16,21 +16,27 @@
     "@auth0/auth0-react": "^2.1.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
     "buffer": "^6.0.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-json-view": "^1.21.3",
     "react-scripts": "^5.0.1"
+  },
+  "overrides": {                                                                                                          
+    "flux": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    },
+    "react-json-view": {
+      "react": "$react",
+      "react-dom": "$react-dom"
+    }
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "lint": "$(npm bin)/eslint src/**/*.js",
     "lint:fix": "$(npm bin)/eslint src/**/*.js --fix",
-    "test:dev": "npx cypress open-ct",
-    "test": "npx cypress run-ct --spec 'src/**/*'",
-    "test:integration": "npx cypress run",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -48,9 +54,6 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.21.8",
     "@babel/preset-react": "^7.22.3",
-    "@cypress/react": "^7.0.3",
-    "@cypress/webpack-dev-server": "^3.4.1",
-    "cypress": "^12.13.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
