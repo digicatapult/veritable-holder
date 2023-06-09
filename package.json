@@ -15,7 +15,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^2.1.0",
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^12.0.0",
+    "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "buffer": "^6.0.3",
     "react": "^17.0.2",
@@ -46,8 +46,8 @@
     ]
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.21.8",
-    "@babel/preset-react": "^7.22.3",
+    "@babel/eslint-parser": "^7.22.5",
+    "@babel/preset-react": "^7.22.5",
     "@cypress/react": "^7.0.3",
     "@cypress/webpack-dev-server": "^3.4.1",
     "cypress": "^12.14.0",
