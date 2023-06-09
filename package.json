@@ -28,9 +28,6 @@
     "build": "react-scripts build",
     "lint": "$(npm bin)/eslint src/**/*.js",
     "lint:fix": "$(npm bin)/eslint src/**/*.js --fix",
-    "test:dev": "npx cypress open-ct",
-    "test": "npx cypress run-ct --spec 'src/**/*'",
-    "test:integration": "npx cypress run",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -48,9 +45,6 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.5",
     "@babel/preset-react": "^7.22.5",
-    "@cypress/react": "^7.0.3",
-    "@cypress/webpack-dev-server": "^3.4.1",
-    "cypress": "^12.14.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
