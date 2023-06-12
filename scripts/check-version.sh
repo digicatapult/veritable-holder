@@ -4,14 +4,14 @@
 set -e
 
 function check_versions_consistent () {
-  local PACKAGE_VERSION=$(yq eval '.version' ./package.json)
-  local PACKAGE_LOCK_VERSION=$(yq eval '.version' ./package-lock.json)
-  
+  local PACKAGE_VERSION=$(yq eval -o y '.version' ./package.json)
+  local PACKAGE_LOCK_VERSION=$(yq eval -o y '.version' ./package-lock.json)
+
   if [ "$PACKAGE_VERSION" != "$PACKAGE_LOCK_VERSION" ]; then
-    echo "Inconsistent versions detected"
-    echo "PACKAGE_VERSION: $PACKAGE_VERSION"
-    echo "PACKAGE_LOCK_VERSION: $PACKAGE_LOCK_VERSION"
-    exit 1
+      echo "Inconsistent versions detected"
+      echo "PACKAGE_VERSION: $PACKAGE_VERSION"
+      echo "PACKAGE_LOCK_VERSION: $PACKAGE_LOCK_VERSION"
+      exit 1
   fi
 }
 
@@ -39,20 +39,20 @@ function check_version_greater () {
 
 # Get published git tags that match semver regex with a "v" prefix then remove the "v" character
 PUBLISHED_VERSIONS=$(git tag | grep "^v[0-9]\+\.[0-9]\+\.[0-9]\+\(\-[a-zA-Z-]\+\(\.[0-9]\+\)*\)\{0,1\}$" | sed 's/^v\(.*\)$/\1/')
-# Get the current version from node Cargo.toml
-CURRENT_VERSION=$(yq eval '.version' ./package.json)
+# Get the current version from package.json
+CURRENT_VERSION=$(yq eval -o y '.version' ./package.json)
 
 if check_version_greater "$CURRENT_VERSION" "$PUBLISHED_VERSIONS"; then
-  echo "##[set-output name=VERSION;]v$CURRENT_VERSION"
-  echo "##[set-output name=BUILD_DATE;]$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-  echo "##[set-output name=IS_NEW_VERSION;]true"
+  echo "VERSION=v$CURRENT_VERSION" >> $GITHUB_OUTPUT
+  echo "BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+  echo "IS_NEW_VERSION=true" >> $GITHUB_OUTPUT
   if [[ $CURRENT_VERSION =~ [-] ]]; then
-    echo "##[set-output name=IS_PRERELEASE;]true"
-    echo "##[set-output name=NPM_RELEASE_TAG;]next"
+    echo "IS_PRERELEASE=true" >> $GITHUB_OUTPUT
+    echo "NPM_RELEASE_TAG=next" >> $GITHUB_OUTPUT
   else
-    echo "##[set-output name=IS_PRERELEASE;]false"
-    echo "##[set-output name=NPM_RELEASE_TAG;]latest"
+    echo "IS_PRERELEASE=false" >> $GITHUB_OUTPUT
+    echo "NPM_RELEASE_TAG=latest" >> $GITHUB_OUTPUT
   fi
 else
-  echo "##[set-output name=IS_NEW_VERSION;]false"
+  echo "IS_NEW_VERSION=false" >> $GITHUB_OUTPUT
 fi
