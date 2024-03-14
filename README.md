@@ -1,5 +1,9 @@
 # veritable-holder
 
+## Deprecation Notice
+This application was deprecated on March 14th 2024, there will be no further dependency or security updates.
+---
+
 ## Description
 
 Front-end for a holder in Veritable. Holders are drone pilot that will be request and holding licenses.
